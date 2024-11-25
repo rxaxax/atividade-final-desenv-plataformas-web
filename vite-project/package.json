@@ -4,13 +4,14 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "nodemon src/api/index.js",
+    "server": "nodemon src/api/app.js",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
+    "@awmottaz/prettier-plugin-void-html": "^1.6.1",
     "dotenv": "^16.4.5",
     "nodemon": "^3.1.7",
     "vite": "^5.4.10"
@@ -22,8 +23,12 @@
     "bootstrap": "^5.3.3",
     "cors": "^2.8.5",
     "express": "^4.21.1",
+    "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.10.0",
     "mongoose": "^8.8.2",
     "sass": "^1.81.0"
+  },
+  "prettier": {
+    "plugins": ["@awmottaz/prettier-plugin-void-html"]
   }
 }

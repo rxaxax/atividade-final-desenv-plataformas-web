@@ -7,19 +7,21 @@ const clientOptions = {
   serverApi: { version: "1", strict: true, deprecationErrors: true },
 };
 
-const consultaDB = async (callback) => {
+async function consultaDB(callback) {
   await mongoose.connect(uri, clientOptions);
-  console.log("banco de dados on");
+  console.log("[CONECTADO AO DB]");
 
   try {
     const result = await callback();
+    console.log("[PROCESSANDO REQUISIÇÃO...]");
+
     return result;
   } catch (error) {
     console.error("Erro ao conectar ao MongoDB:", error.message);
   } finally {
     await mongoose.disconnect();
-    console.log("banco de dados off");
+    console.log("[DB DESCONECTADO]");
   }
-};
+}
 
 export default consultaDB;
