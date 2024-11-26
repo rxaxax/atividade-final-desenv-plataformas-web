@@ -5,30 +5,17 @@ import consultaDB from "./config/database.js";
 import Usuario from "./models/usuario.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { router, checarToken } from "./routes/usuarioRoutes.js";
 
 /* INICIALIZAR O APP */
 const app = express();
+const usuarioRoutes = router;
 
 /* MIDDLEWARES */
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-function checarToken(req, res, next) {
-  const reqHeader = req.headers["authorization"];
-  const token = reqHeader && reqHeader.split(" ")[1];
-
-  if (!token) {
-    return res.status(401).json({ msg: "Acesso negado!" });
-  }
-
-  try {
-    const secret = process.env.SECRET;
-    jwt.verify(token, secret);
-    next();
-  } catch (e) {
-    res.status(404).json({ msg: "Token inválido!" });
-  }
-}
+app.use("/usuario", usuarioRoutes);
 
 /* ROTA PÚBLICA */
 
@@ -37,22 +24,6 @@ app.get("/", async (req, res) => {
 });
 
 /* ROTA PRIVADA */
-
-app.get("/usuario/:id", checarToken, async (req, res) => {
-  const id = req.params.id;
-
-  consultaDB(async () => {
-    const usuario = await Usuario.findById(id, "-senha");
-
-    if (!usuario) {
-      return res.status(404).json({
-        msg: "Usuário não encontrado!",
-      });
-    }
-
-    res.status(200).json({ usuario });
-  });
-});
 
 app.get("/gestaoadmin/:id", checarToken, async (req, res) => {
   // Exemplo de dados administrativos
@@ -67,66 +38,6 @@ app.get("/gestaoadmin/:id", checarToken, async (req, res) => {
     };
 
     res.status(200).json(adminData);
-  });
-});
-
-/* ROTA DE REGISTRO DE USUARIO */
-
-app.post("/register", async (req, res) => {
-  const { nome, email, senha, confirmacaoSenha } = req.body;
-
-  //validações
-  if (!nome) {
-    return res.status(422).json({ msg: "O campo 'nome' é obrigatório!" });
-  }
-
-  if (!email) {
-    return res.status(422).json({ msg: "O campo 'email' é obrigatório!" });
-  }
-
-  if (!senha) {
-    return res.status(422).json({ msg: "O campo 'senha' é obrigatório!" });
-  }
-
-  if (senha && !confirmacaoSenha) {
-    return res
-      .status(422)
-      .json({ msg: "A confirmação da senha no campo adequado é obrigatória!" });
-  }
-  if (senha !== confirmacaoSenha) {
-    return res.status(422).json({ msg: "As senhas não coincidem!" });
-  }
-
-  consultaDB(async () => {
-    // verificar existencia de usuario
-
-    const usuarioExiste = await Usuario.findOne({ email: email });
-    if (usuarioExiste) {
-      return res.status(422).json({
-        msg: `O endereço de email ${email} já possui cadastro!`,
-      });
-    }
-
-    // criptografia da senha
-    const senhaCripto = await bcrypt.hash(senha, 8);
-    // criar usuario
-    const usuario = new Usuario({
-      nome,
-      email,
-      senha: senhaCripto,
-    });
-
-    try {
-      await usuario.save();
-      res.status(201).json({
-        msg: "Seu cadastro foi realizado com sucesso!",
-      });
-    } catch (e) {
-      console.log(e);
-      res
-        .status(500)
-        .json({ msg: "Erro no servidor, tente novamente mais tarde!" });
-    }
   });
 });
 
@@ -179,9 +90,6 @@ app.post("/login", async (req, res) => {
   });
 });
 
-// app.put ()
-// app.delete()
-
-/* INICIAR O SERVIDOR */
+/* INICIAR O SERVIDOR*/
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`SERVIDOR RODANDO NA PORTA ${PORT}`));

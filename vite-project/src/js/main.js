@@ -9,7 +9,7 @@ document
 
   try {
     // Enviar dados via fetch para o servidor
-    const response = await fetch("http://localhost:3000/register", {
+    const response = await fetch("http://localhost:3000/usuario", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
