@@ -1,16 +1,440 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-br">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Testes de integração front-end/back-end</title>
-    <script type="module" src="./js/main.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Blog - Landing Page</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    >
+    <style>
+      body {
+        background-image: url("https://www.patternpictures.com/wp-content/uploads/Green-lawn-grass-field-background-photo-patternpictures-06111019.jpg");
+        background-size: cover;
+        background-attachment: fixed;
+      }
+
+      .bg-overlay {
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        border-radius: 10px;
+      }
+
+      .pet-icon {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+
+      header button a {
+        all: unset;
+      }
+    </style>
   </head>
   <body>
-    <div class="container py-4 px-3 mx-auto">
-      <h1>Testes de integração do front-end com o back-end!</h1>
-      <button class="btn btn-primary">Cadastre-se</button>
-      <button class="btn btn-primary">Entrar</button>
+    <header>
+      <nav class="navbar navbar-expand-lg bg-overlay">
+        <div class="container">
+          <a href="index.html" class="navbar-brand">Pet Blog</a>
+
+          <div class="d-flex gap-2" id="btns-unlogged">
+            <button
+              class="btn btn-outline-success btn-sm"
+              data-bs-toggle="modal"
+              data-bs-target="#loginModal"
+            >
+              Entrar
+            </button>
+            <button
+              class="btn btn-outline-success btn-sm"
+              data-bs-toggle="modal"
+              data-bs-target="#registerModal"
+            >
+              Cadastrar
+            </button>
+          </div>
+
+          <div class="d-none gap-2" id="btns-logged">
+            
+            <button class="btn btn-outline-success btn-sm" onclick="window.location.href = '/gestaoadmin.html'">
+              Administrativo
+            </button>
+            <button class="btn btn-outline-success btn-sm" onclick="btnSair()">
+              Sair
+            </button>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="text-center">
+      <div class="container mt-4 bg-overlay">
+        <h1 class="fs-2">Bem-vindo ao Pet Blog</h1>
+        <p class="fs-6 lead">
+          Um espaço para compartilhar e aprender sobre o convívio com nossos
+          amigos peludos
+        </p>
+      </div>
+    </main>
+
+    <section class="mt-5">
+      <div class="container bg-overlay">
+        <h2 class="text-center mb-5">
+          A Importância do Convívio com Animais de Estimação
+        </h2>
+        <div class="row">
+          <div class="col-md-4 text-center">
+            <img
+              src="https://cisavet.com.br/arquivos/banco-de-imagens/categoria-1/dicas-na-hora-de-escolher-um-cao-como-companheiro-20161125143942.jpg"
+              alt="Ícone Companhia"
+              class="pet-icon mb-3"
+            >
+            <h4>Companhia e Amizade</h4>
+            <p>
+              Ter um pet é muito mais do que cuidar de um animal, é criar uma
+              conexão especial que enriquece o dia a dia. Eles trazem alegria,
+              ajudam a combater a solidão e oferecem um amor genuíno, melhorando
+              o humor e promovendo bem-estar. A presença de um pet transforma
+              momentos simples em experiências cheias de carinho e companhia,
+              tornando os dias mais leves e felizes. Além disso, fortalecem
+              laços emocionais, ensinam empatia e são uma fonte constante de
+              inspiração e amizade.
+            </p>
+          </div>
+          <div class="col-md-4 text-center">
+            <img
+              src="https://blog-static.petlove.com.br/wp-content/uploads/2021/05/Mulher-gato-no-colo-380x260.jpg"
+              alt="Ícone Redução do Estresse"
+              class="pet-icon mb-3"
+            >
+            <h4>Redução do Estresse</h4>
+            <p>
+              Redução do Estresse Conviver com animais é uma forma natural e
+              eficaz de aliviar o estresse e a ansiedade. Eles ajudam a criar um
+              ambiente tranquilo, promovendo sensações de paz e bem-estar. A
+              interação com pets, seja por meio de brincadeiras ou momentos de
+              afeto, estimula a liberação de hormônios como a ocitocina,
+              responsável por reduzir a tensão e trazer equilíbrio emocional.
+              Sua presença transforma o ambiente, tornando-o mais harmonioso e
+              acolhedor, e contribuindo para uma vida mais leve e saudável.
+            </p>
+          </div>
+          <div class="col-md-4 text-center">
+            <img
+              src="https://vetery.com.br/wp-content/uploads/2023/03/atividades-fisicas-para-seu-pet.jpg"
+              alt="Ícone Atividades Físicas"
+              class="pet-icon mb-3"
+            >
+            <h4>Atividades Físicas</h4>
+            <p>
+              Ter um pet é um incentivo natural para se manter ativo e saudável.
+              Caminhadas com cães, brincadeiras com gatos ou até cuidados
+              diários estimulam o movimento e ajudam a incorporar a atividade
+              física na rotina. Esses momentos não apenas melhoram a saúde
+              física, mas também fortalecem o vínculo com o animal, promovendo
+              bem-estar emocional. Com um pet ao lado, até o exercício vira uma
+              experiência divertida e cheia de afeto, tornando os dias mais
+              dinâmicos e equilibrados.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-5">
+      <div class="container text-center bg-overlay pb-5 mb-2">
+        <h2 class="fs-2">Pets dos Visitantes</h2>
+        <div class="d-flex justify-content-center" id="carrossel">
+          <div id="carouselExample" class="carousel slide">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <div class="cards-wrapper d-flex gap-2">
+                  <div class="card" style="width: 16rem; height: 18rem">
+                    <img
+                      src="assets/imgs/img001.png"
+                      class="card-img-top"
+                      alt="Gatin"
+                    >
+                    <div class="card-body">
+                      <h5 class="card-title">Toffee</h5>
+                      <p class="card-text"></p>
+                    </div>
+                  </div>
+                  <div class="card" style="width: 16rem; height: 18rem">
+                    <img
+                      src="assets/imgs/img002.png"
+                      class="card-img-top"
+                      alt="..."
+                    >
+                    <div class="card-body">
+                      <h5 class="card-title">Gnomo</h5>
+                      <p class="card-text"></p>
+                    </div>
+                  </div>
+                  <div class="card" style="width: 16rem; height: 18rem">
+                    <img
+                      src="assets/imgs/img003.png"
+                      class="card-img-top"
+                      alt="..."
+                    >
+                    <div class="card-body">
+                      <h5 class="card-title">Bartô</h5>
+                      <p class="card-text"></p>
+                    </div>
+                  </div>
+                  <div class="card" style="width: 16rem; height: 18rem">
+                    <img
+                      src="assets/imgs/img004.png"
+                      class="card-img-top"
+                      alt="..."
+                    >
+                    <div class="card-body">
+                      <h5 class="card-title">Zeus</h5>
+                      <p class="card-text"></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="cards-wrapper d-flex gap-2">
+                  <div class="card" style="width: 16rem; height: 18rem">
+                    <img
+                      src="assets/imgs/img005.png"
+                      class="card-img-top"
+                      alt="Gatin"
+                    >
+                    <div class="card-body">
+                      <h5 class="card-title">Nata & Goiaba</h5>
+                      <p class="card-text"></p>
+                    </div>
+                  </div>
+                  <div class="card" style="width: 16rem; height: 18rem">
+                    <img
+                      src="assets/imgs/img006.png"
+                      class="card-img-top"
+                      alt="..."
+                    >
+                    <div class="card-body">
+                      <h5 class="card-title">Pink & Cérebro</h5>
+                      <p class="card-text"></p>
+                    </div>
+                  </div>
+                  <div class="card" style="width: 16rem; height: 18rem">
+                    <img
+                      src="assets/imgs/img007.png"
+                      class="card-img-top"
+                      alt="..."
+                    >
+                    <div class="card-body">
+                      <h5 class="card-title">Romeu & Tom</h5>
+                      <p class="card-text"></p>
+                    </div>
+                  </div>
+                  <div class="card" style="width: 16rem; height: 18rem">
+                    <img
+                      src="assets/imgs/img008.png"
+                      class="card-img-top"
+                      alt="..."
+                    >
+                    <div class="card-body">
+                      <h5 class="card-title">Snow</h5>
+                      <p class="card-text"></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button
+              class="carousel-control-prev"
+              type="button"
+              data-bs-target="#carouselExample"
+              data-bs-slide="prev"
+            >
+              <span
+                class="carousel-control-prev-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button
+              class="carousel-control-next"
+              type="button"
+              data-bs-target="#carouselExample"
+              data-bs-slide="next"
+            >
+              <span
+                class="carousel-control-next-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="text-center text-lg-start text-black bg-overlay p-1 mt-5">
+      <div class="text-center p-2 fs-4">
+        <a href="politicaprivacidade.html">Política de Privacidade</a>
+      </div>
+      <div class="text-center p-0">© 2024 Copyright</div>
+    </footer>
+    <!-- MODAIS -->
+
+    <!-- Modal de Login -->
+    <div
+      class="modal fade"
+      id="loginModal"
+      tabindex="-1"
+      aria-labelledby="loginModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="loginModalLabel">Login</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="loginForm" autocomplete="off">
+              <div class="mb-3">
+                <label for="loginEmail" class="form-label">E-mail</label>
+                <input
+                  type="email"
+                  id="loginEmail"
+                  name="loginEmail"
+                  class="form-control"
+                  placeholder="Digite seu e-mail"
+                  autocomplete="off"
+                  required
+                >
+              </div>
+              <div class="mb-3">
+                <label for="loginSenha" class="form-label">Senha</label>
+                <input
+                  type="password"
+                  id="loginSenha"
+                  name="loginSenha"
+                  class="form-control"
+                  placeholder="Digite sua senha"
+                  autocomplete="off"
+                  required
+                >
+              </div>
+              <button
+                type="submit"
+                class="btn btn-primary w-100"
+                onclick="loginForm()"
+              >
+                Entrar
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- Modal de Cadastro -->
+    <div
+      class="modal fade"
+      id="registerModal"
+      tabindex="-1"
+      aria-labelledby="registerModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="registerModalLabel">Cadastro</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="registerForm" autocomplete="off">
+              <div class="mb-3">
+                <label for="nome" class="form-label">Nome Completo</label>
+                <input
+                  type="text"
+                  id="nome"
+                  name="nome"
+                  class="form-control"
+                  placeholder="Digite seu nome completo"
+                  autocomplete="off"
+                  required
+                >
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">E-mail</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  class="form-control"
+                  placeholder="Digite seu e-mail"
+                  autocomplete="off"
+                  required
+                >
+              </div>
+              <div class="mb-3">
+                <label for="senha" class="form-label">Senha</label>
+                <input
+                  type="password"
+                  id="senha"
+                  name="senha"
+                  class="form-control"
+                  placeholder="Crie uma senha"
+                  autocomplete="off"
+                  required
+                >
+              </div>
+              <div class="mb-3">
+                <label for="confirmacaoSenha" class="form-label"
+                  >Confirmação da senha</label
+                >
+                <input
+                  type="password"
+                  id="confirmacaoSenha"
+                  name="confirmacaoSenha"
+                  class="form-control"
+                  placeholder="Confirme sua senha"
+                  autocomplete="off"
+                  required
+                >
+              </div>
+              <button
+                type="submit"
+                class="btn btn-primary w-100"
+                onclick="registerForm()"
+              >
+                Cadastrar
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <script src="js/main.js"></script>
+    <script>
+      usuarioLogado();
+    </script>
   </body>
 </html>
