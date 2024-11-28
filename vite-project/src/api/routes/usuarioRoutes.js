@@ -1,5 +1,5 @@
 import { Router } from "express";
-import consultaDB from "../config/database.js";
+import cors from "cors";
 import Usuario from "../models/usuario.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -17,10 +17,10 @@ function checarToken(req, res, next) {
   try {
     const secret = process.env.SECRET;
     jwt.verify(token, secret);
-    
+
     next();
   } catch (e) {
-    console.log(e)
+    console.log(e);
     res.status(404).json({ msg: "Token inválido!" });
   }
 }
@@ -49,27 +49,25 @@ router.post("/", async (req, res) => {
   }
 
   try {
-    consultaDB(async () => {
-      // verificar existência do usuario
-      const usuarioExiste = await Usuario.findOne({ email: email });
-      if (usuarioExiste) {
-        return res.status(422).json({
-          msg: `O endereço de email ${email} já possui cadastro!`,
-        });
-      }
+    // verificar existência do usuario
+    const usuarioExiste = await Usuario.findOne({ email: email });
+    if (usuarioExiste) {
+      return res.status(422).json({
+        msg: `O endereço de email ${email} já possui cadastro!`,
+      });
+    }
 
-      // criar usuario
-      const senhaCripto = await bcrypt.hash(senha, 8);
-      const usuario = new Usuario({
-        nome,
-        email,
-        senha: senhaCripto,
-      });
-      // salvar usuario no banco de dados
-      await usuario.save();
-      res.status(201).json({
-        msg: "Seu cadastro foi realizado com sucesso!",
-      });
+    // criar usuario
+    const senhaCripto = await bcrypt.hash(senha, 8);
+    const usuario = new Usuario({
+      nome,
+      email,
+      senha: senhaCripto,
+    });
+    // salvar usuario no banco de dados
+    await usuario.save();
+    res.status(201).json({
+      msg: "Seu cadastro foi realizado com sucesso!",
     });
   } catch (e) {
     console.log(e);
@@ -82,17 +80,14 @@ router.post("/", async (req, res) => {
 // READ
 router.get("/", async (req, res) => {
   try {
-    consultaDB(async () => {
-      const usuarios = await Usuario.find({}, { senha: 0 });
+    const usuarios = await Usuario.find({}, { senha: 0 });
 
-      if (!usuarios) {
-        return res.status(404).json({
-          msg: "Nenhum usuário foi encontrado!",
-        });
-      }
-
-      res.status(200).json(usuarios);
-    });
+    if (!usuarios) {
+      return res.status(404).json({
+        msg: "Nenhum usuário foi encontrado!",
+      });
+    }
+    res.status(200).json(usuarios);
   } catch (e) {
     console.log(e);
     res
@@ -105,17 +100,15 @@ router.get("/:id", async (req, res) => {
   const id = req.params.id;
 
   try {
-    consultaDB(async () => {
-      const usuario = await Usuario.findById(id, "-senha");
+    const usuario = await Usuario.findById(id, "-senha");
 
-      if (!usuario) {
-        return res.status(404).json({
-          msg: "Usuário não encontrado!",
-        });
-      }
+    if (!usuario) {
+      return res.status(404).json({
+        msg: "Usuário não encontrado!",
+      });
+    }
 
-      res.status(200).json(usuario);
-    });
+    res.status(200).json(usuario);
   } catch (e) {
     console.log(e);
     res
@@ -129,22 +122,29 @@ router.patch("/:id", async (req, res) => {
   const id = req.params.id;
   const { nome, email, senha } = req.body;
 
-  const usuario = {
-    nome,
-    email,
-    senha,
-  };
+  const usuario = Object.fromEntries(
+    Object.entries({ nome, email, senha }).filter(
+      ([_, value]) => value != null,
+    ),
+  );
+
+  console.log("senha: ", senha);
+
+  if (senha) {
+    const senhaCripto = await bcrypt.hash(senha, 8);
+    usuario.senha = senhaCripto;
+  }
 
   try {
-    consultaDB(async () => {
-      const atualizacao = await Usuario.updateOne({ _id: id }, usuario);
+    const atualizacao = await Usuario.updateOne({ _id: id }, usuario);
 
-      if (atualizacao.matchedCount === 0) {
-        return res.status(422).json({ msg: "O usuário não foi encontrado" });
-      }
+    console.log("matchedCount :", atualizacao.matchedCount);
 
-      res.status(200).json(usuario);
-    });
+    if (!atualizacao.matchedCount) {
+      return res.status(422).json({ msg: "Nenhuma alteração enviada!" });
+    }
+
+    res.status(200).json({ msg: "Usuário atualizado!" });
   } catch (e) {
     console.log(e);
     res
@@ -158,19 +158,17 @@ router.delete("/:id", async (req, res) => {
   const id = req.params.id;
 
   try {
-    consultaDB(async () => {
-      const usuario = await Usuario.findById(id, "-senha");
+    const usuario = await Usuario.findById(id, "-senha");
 
-      if (!usuario) {
-        return res.status(404).json({
-          msg: "Usuário não encontrado!",
-        });
-      }
+    if (!usuario) {
+      return res.status(404).json({
+        msg: "Usuário não encontrado!",
+      });
+    }
 
-      await Usuario.deleteOne({ _id: id });
+    await Usuario.deleteOne({ _id: id });
 
-      res.status(200).json({ msg: "Usuário removido com sucesso!" });
-    });
+    res.status(200).json({ msg: "Usuário removido com sucesso!" });
   } catch (e) {
     console.log(e);
     res
